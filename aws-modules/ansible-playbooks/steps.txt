@@ -1,0 +1,61 @@
+sudo yum -y install epel-release
+sudo yum -y update
+sudo yum -y install curl git wget vim bash-completion java-1.8.0-openjdk-devel
+
+
+## Apache release 
+wget http://www-us.apache.org/dist/cassandra/3.10/apache-cassandra-3.10-bin.tar.gz
+gunzip -c *gz | tar xvf -
+
+
+
+$ vi ~/.bash_profile
+
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+export PATH=$PATH:$JAVA_HOME/bin
+export CASSANDRA_HOME=~/apache-cassandra-3.10
+export PATH=$PATH:$CASSANDRA_HOME/bin
+export CASSANDRA_CONF_DIR=$CASSANDRA_HOME/conf
+
+
+### Datastax Community release
+$ vi /etc/yum.repos.d/datastax.repo
+[datastax] 
+name = DataStax Repo for Apache Cassandra
+baseurl = http://rpm.datastax.com/community
+enabled = 1
+gpgcheck = 0
+
+
+$ sudo yum install dsc30
+$ sudo yum install cassandra30-tools
+
+configuration file >>> /etc/cassandra/conf/cassandra.yaml
+
+$ sudo service cassandra start
+$ nodetool status
+
+
+$ vi ~/.ssh/config
+Host *
+	StrictHostKeyChecking no
+
+
+>> add nodes 
+$ vi /etc/hosts
+
+192.168.50.41 cassandra1.example.com
+
+>> For DEv servers to disbale password
+
+$ chmod 600 ~/.ssh/config
+$ ssh-keygen -f ~/.ssh/id_rsa -t rsa -P ""
+$ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+
+$ source ~/.bash_profile
+
+
+$ ~/apache-cassandra-3.10/bin/cassandra
+
+
